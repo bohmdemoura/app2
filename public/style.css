@@ -1,217 +1,479 @@
-/* Estilização da página inteira */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0d0f12;
+  --surface: #13161b;
+  --surface-2: #1a1e25;
+  --surface-3: #222730;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.13);
+  --accent: #4ade80;
+  --accent-dim: rgba(74,222,128,0.12);
+  --accent-glow: rgba(74,222,128,0.25);
+  --text-1: #f0f2f5;
+  --text-2: #8b92a0;
+  --text-3: #555d6b;
+  --danger: #f87171;
+  --danger-dim: rgba(248,113,113,0.12);
+  --warning: #fbbf24;
+  --font: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+}
+
+html { font-size: 16px; }
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5; 
-    display: flex;             
-    justify-content: center;   
-    align-items: center;       
-    height: 100vh;             
-    margin: 0;
+  font-family: var(--font);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% -10%, rgba(74,222,128,0.08) 0%, transparent 70%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  color: var(--text-1);
 }
 
-/* Estilização da caixa central */
+/* ── Auth Card ─────────────────────────────────────── */
+
 .cartao-acesso {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 10px;       
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-    width: 100%;
-    max-width: 350px;
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
 }
 
-h2 {
-    text-align: center;
-    color: #333333;
-    margin-bottom: 20px;
+.cartao-acesso::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,222,128,0.06) 0%, transparent 60%);
+  pointer-events: none;
 }
 
-/* Estilização dos campos de texto */
+.logo-area {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+h2#titulo-form {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-1);
+  text-align: center;
+  letter-spacing: -0.3px;
+}
+
+.subtitulo-form {
+  font-size: 14px;
+  color: var(--text-2);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── Form Fields ───────────────────────────────────── */
+
 .grupo-campo {
-    margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .grupo-campo label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555555;
-    font-size: 14px;
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.2px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
 }
 
-.grupo-campo input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    box-sizing: border-box; 
-    font-size: 14px;
+.grupo-campo input,
+.grupo-campo select {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  -webkit-appearance: none;
 }
 
-/* Estilização do botão principal */
+.grupo-campo input::placeholder {
+  color: var(--text-3);
+}
+
+.grupo-campo input:focus,
+.grupo-campo select:focus {
+  border-color: rgba(74,222,128,0.4);
+  box-shadow: 0 0 0 3px rgba(74,222,128,0.08);
+}
+
+.grupo-campo select option {
+  background: var(--surface-3);
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+
 button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff; 
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: background-color 0.3s; 
+  width: 100%;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #0a1a0f;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: opacity 0.15s, transform 0.15s;
+  letter-spacing: -0.1px;
 }
 
 button:hover {
-    background-color: #0056b3; 
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
-/* Estilização da área de alternância */
+button:active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ── Toggle Mode ───────────────────────────────────── */
+
 .alternar-modo {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--text-2);
 }
 
 .alternar-modo a {
-    color: #007bff;
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: bold;
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .alternar-modo a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
+
+/* ── Dashboard Panel ───────────────────────────────── */
+
+body.pagina-dashboard {
+  align-items: flex-start;
+  padding: 32px 24px 60px;
+}
+
 .cartao-painel {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 10px;       
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-    width: 100%;
-    max-width: 500px; /* Um pouco mais largo para acomodar os dados */
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.cartao-painel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(74,222,128,0.05) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .cabecalho-painel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eeeeee;
-    padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.cabecalho-painel .titulo-app {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cabecalho-painel .titulo-app .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .cabecalho-painel h2 {
-    margin: 0;
-    color: #333333;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-1);
+  letter-spacing: -0.2px;
 }
 
-.botao-secundario {
-    background-color: #dc3545; /* Cor vermelha para indicar saída */
-    width: auto;
-    padding: 8px 15px;
-    font-size: 14px;
-    margin-top: 0;
+.botao-sair {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  width: auto;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 0;
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
 }
 
-.botao-secundario:hover {
-    background-color: #c82333;
+.botao-sair:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: var(--danger-dim);
+  opacity: 1;
+  transform: none;
 }
 
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    box-sizing: border-box; 
-    font-size: 14px;
-    font-family: inherit;
-    background-color: white;
+/* ── Balance Panel ─────────────────────────────────── */
+
+.painel-total {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Estilo para cada item financeiro na lista */
+.painel-total::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.painel-total .label-saldo {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+
+.painel-total #valor-total {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+/* ── Section Title ─────────────────────────────────── */
+
+.titulo-secao {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-3);
+  margin-bottom: 16px;
+}
+
+/* ── Form Section ──────────────────────────────────── */
+
+.secao-formulario {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  margin-bottom: 28px;
+}
+
+/* ── Add Button ────────────────────────────────────── */
+
+#botao-adicionar {
+  background: var(--surface-3);
+  color: var(--text-1);
+  border: 1px solid var(--border-hover);
+  margin-top: 4px;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+#botao-adicionar:hover {
+  background: var(--accent-dim);
+  border-color: rgba(74,222,128,0.3);
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* ── Transaction History ───────────────────────────── */
+
+.historico-transacoes {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+#lista-transacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .item-transacao {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-left: 4px solid #007bff;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.item-transacao:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-3);
 }
 
 .item-transacao .detalhes {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .item-transacao .descricao {
-    font-weight: bold;
-    color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-1);
 }
 
 .item-transacao .metodo {
-    font-size: 12px;
-    color: #666;
-    margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+.item-transacao .acoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .item-transacao .valor {
-    font-weight: bold;
-    color: #28a745; /* Cor verde para destaque numérico */
-    font-size: 16px;
-}
-
-/* --- ESTILOS DO BOTÃO DE EXCLUIR --- */
-
-.item-transacao .acoes {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Espaçamento entre o valor (R$) e o botão X */
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent);
 }
 
 .botao-excluir {
-    background-color: #dc3545; /* Vermelho padrão para ações destrutivas */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    width: 25px;
-    height: 25px;
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    margin-top: 0; /* Remove a margem superior padrão dos botões globais */
-    transition: background-color 0.2s;
+  background: transparent;
+  color: var(--text-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
 }
 
 .botao-excluir:hover {
-    background-color: #a71d2a; /* Vermelho mais escuro ao passar o mouse */
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-dim);
+  opacity: 1;
+  transform: none;
 }
 
-/* --- ESTILOS DO PAINEL NUMÉRICO --- */
-.painel-total {
-    background-color: #28a745; /* Cor verde para remeter a dinheiro/saldo */
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+/* ── Empty State ───────────────────────────────────── */
+
+.estado-vazio {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-3);
+  font-size: 14px;
 }
 
-.painel-total span {
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.9;
+/* ── Pill Badge ────────────────────────────────────── */
+
+.pill-credito {
+  display: inline-block;
+  background: rgba(251,191,36,0.1);
+  color: var(--warning);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
 }
 
-.painel-total h2 {
-    margin: 10px 0 0 0;
-    font-size: 36px; /* Tamanho grande para destaque */
-    color: white; 
+.pill-debito {
+  display: inline-block;
+  background: rgba(139,146,160,0.1);
+  color: var(--text-2);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+}
+
+/* ── Responsive ────────────────────────────────────── */
+
+@media (max-width: 500px) {
+  body { padding: 16px; align-items: flex-start; }
+  .cartao-acesso { padding: 28px 22px; }
+  .cartao-painel { padding: 24px 20px; }
+  .painel-total #valor-total { font-size: 30px; }
 }

@@ -1,44 +1,48 @@
-// 1. Importações de Autenticação
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-// 2. Importações do Banco de Dados (Firestore)
 import { collection, addDoc, serverTimestamp, query, where, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// 3. Importação das conexões centralizadas
 import { auth, db } from "./firebase-config.js";
 
-// 3. Verificação de Segurança (Guarda de Rota)
+// Guarda de rota
 onAuthStateChanged(auth, (usuario) => {
     if (!usuario) {
         window.location.href = "index.html";
     } else {
-        // Quando a verificação de segurança passa, inicia-se a leitura dos dados
         carregarTransacoes(usuario.uid);
     }
 });
-// 4. Lógica de Interface: Alternar parcelas
+
+// Botão sair
+document.getElementById('botao-sair').addEventListener('click', () => {
+    signOut(auth).then(() => {
+        window.location.href = "index.html";
+    });
+});
+
+// Alternar parcelas
 const seletorPagamento = document.getElementById('tipo-pagamento');
 const areaParcelas = document.getElementById('area-parcelas');
 
 seletorPagamento.addEventListener('change', (evento) => {
     if (evento.target.value === 'credito') {
-        areaParcelas.style.display = 'block'; // Mostra as parcelas
+        areaParcelas.style.display = 'block';
     } else {
-        areaParcelas.style.display = 'none';  // Oculta as parcelas
-        document.getElementById('parcelas').value = 1; // Retorna ao valor padrão
+        areaParcelas.style.display = 'none';
+        document.getElementById('parcelas').value = 1;
     }
 });
 
-// 5. Lógica de Submissão do Formulário
-// 2. Nova Lógica de Submissão do Formulário
+// Submissão do formulário
 document.getElementById('formulario-transacao').addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
-    // Bloqueia o salvamento se não houver conta logada
     if (!auth.currentUser) {
         alert("Sessão inválida. Faça login novamente.");
         return;
     }
+
+    const botao = document.getElementById('botao-adicionar');
+    botao.textContent = 'Salvando...';
+    botao.disabled = true;
 
     const idUsuario = auth.currentUser.uid;
     const descricao = document.getElementById('descricao').value;
@@ -47,83 +51,86 @@ document.getElementById('formulario-transacao').addEventListener('submit', async
     const parcelas = document.getElementById('parcelas').value;
 
     try {
-        // Envio do documento para a coleção "transacoes" no Firestore
         await addDoc(collection(db, "transacoes"), {
-            usuarioId: idUsuario,        // Atrela a compra à conta atual
+            usuarioId: idUsuario,
             descricao: descricao,
-            valor: parseFloat(valorInserido), // Converte texto para número decimal
+            valor: parseFloat(valorInserido),
             metodoPagamento: tipoPagamento,
             numeroParcelas: tipoPagamento === 'credito' ? parseInt(parcelas) : 1,
-            dataHora: serverTimestamp()  // Salva o horário exato do servidor
+            dataHora: serverTimestamp()
         });
 
-        alert("Transação registrada com sucesso no banco de dados!");
-        
-        // Limpa a interface
         evento.target.reset();
         document.getElementById('area-parcelas').style.display = 'none';
 
     } catch (erro) {
         console.error("Erro ao gravar dados:", erro);
         alert("Falha de comunicação com o banco de dados.");
+    } finally {
+        botao.textContent = '+ Adicionar transação';
+        botao.disabled = false;
     }
 });
 
-// --- FUNÇÃO PARA LISTAR TRANSAÇÕES ---
+// Carregar transações em tempo real
 function carregarTransacoes(idUsuario) {
     const transacoesRef = collection(db, "transacoes");
     const q = query(transacoesRef, where("usuarioId", "==", idUsuario));
 
- onSnapshot(q, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
         const areaLista = document.getElementById('lista-transacoes');
-        const elementoTotal = document.getElementById('valor-total'); // Captura o h2 do painel
-        
-        areaLista.innerHTML = ''; 
-        let totalFinancias = 0; // Variável matemática que inicia zerada
+        const elementoTotal = document.getElementById('valor-total');
 
-        // Se não houver dados no banco
+        areaLista.innerHTML = '';
+        let totalFinancias = 0;
+
         if (snapshot.empty) {
-            areaLista.innerHTML = '<p style="text-align: center; color: #888;">Nenhuma transação inserida.</p>';
-            elementoTotal.innerText = 'R$ 0.00'; // Zera o painel visualmente
+            areaLista.innerHTML = '<p class="estado-vazio">Nenhuma transação registrada ainda.</p>';
+            elementoTotal.innerText = 'R$ 0,00';
             return;
         }
 
-        // Passa por cada documento
-        snapshot.forEach((documento) => {
+        // Ordenar por data (mais recentes primeiro) — snapshot não garante ordem
+        const docs = [];
+        snapshot.forEach(d => docs.push(d));
+
+        docs.forEach((documento) => {
             const dados = documento.data();
-            const idDoc = documento.id; 
-            
-            // Somatório: adiciona o valor atual à variável totalFinancias
+            const idDoc = documento.id;
+
             totalFinancias += dados.valor;
 
             const caixaItem = document.createElement('div');
             caixaItem.className = 'item-transacao';
-            
-            let textoPagamento = dados.metodoPagamento === 'credito' ? 'Crédito' : 'Débito';
+
+            let badgeHtml;
             if (dados.metodoPagamento === 'credito') {
-                textoPagamento += ` (${dados.numeroParcelas}x)`;
+                const xLabel = dados.numeroParcelas > 1 ? `${dados.numeroParcelas}x crédito` : 'crédito';
+                badgeHtml = `<span class="pill-credito">${xLabel}</span>`;
+            } else {
+                badgeHtml = `<span class="pill-debito">débito</span>`;
             }
 
             caixaItem.innerHTML = `
                 <div class="detalhes">
                     <span class="descricao">${dados.descricao}</span>
-                    <span class="metodo">${textoPagamento}</span>
+                    <span class="metodo">${badgeHtml}</span>
                 </div>
                 <div class="acoes">
                     <span class="valor">R$ ${dados.valor.toFixed(2)}</span>
-                    <button class="botao-excluir" title="Excluir item">X</button>
+                    <button class="botao-excluir" title="Excluir" aria-label="Excluir transação">×</button>
                 </div>
             `;
-            
+
             const botaoDeletar = caixaItem.querySelector('.botao-excluir');
             botaoDeletar.addEventListener('click', async () => {
-                const confirmacao = confirm("A exclusão será permanente. Deseja continuar?");
+                const confirmacao = confirm("Remover esta transação permanentemente?");
                 if (confirmacao) {
                     try {
                         await deleteDoc(doc(db, "transacoes", idDoc));
                     } catch (erro) {
                         console.error("Erro ao excluir:", erro);
-                        alert("Falha na tentativa de remover a transação.");
+                        alert("Não foi possível remover a transação.");
                     }
                 }
             });
@@ -131,6 +138,6 @@ function carregarTransacoes(idUsuario) {
             areaLista.appendChild(caixaItem);
         });
 
-        // Após passar por todos os itens, atualiza a interface com a soma total
         elementoTotal.innerText = `R$ ${totalFinancias.toFixed(2)}`;
-    });}
+    });
+}
