@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso - Finanças</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="cartao-acesso">
+        <h2 id="titulo-form">Acessar Conta</h2>
+        
+        <form id="formulario-auth">
+            <div class="grupo-campo">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" required placeholder="exemplo@email.com">
+            </div>
+            
+            <div class="grupo-campo">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" required placeholder="Digite a senha">
+            </div>
+            
+            <button type="submit" id="botao-submit">Entrar</button>
+        </form>
+
+        <div class="alternar-modo">
+            <span id="texto-alternar">Novo por aqui? </span>
+            <a id="link-alternar">Crie uma conta</a>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+
+</body>
+</html>

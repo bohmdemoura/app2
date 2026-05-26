@@ -1,0 +1,129 @@
+/* Estilização da página inteira */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; 
+    display: flex;             
+    justify-content: center;   
+    align-items: center;       
+    height: 100vh;             
+    margin: 0;
+}
+
+/* Estilização da caixa central */
+.cartao-acesso {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;       
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+    width: 100%;
+    max-width: 350px;
+}
+
+h2 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+/* Estilização dos campos de texto */
+.grupo-campo {
+    margin-bottom: 15px;
+}
+
+.grupo-campo label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555555;
+    font-size: 14px;
+}
+
+.grupo-campo input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 14px;
+}
+
+/* Estilização do botão principal */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s; 
+}
+
+button:hover {
+    background-color: #0056b3; 
+}
+
+/* Estilização da área de alternância */
+.alternar-modo {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.alternar-modo a {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.alternar-modo a:hover {
+    text-decoration: underline;
+}
+.cartao-painel {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;       
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+    width: 100%;
+    max-width: 500px; /* Um pouco mais largo para acomodar os dados */
+}
+
+.cabecalho-painel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 10px;
+}
+
+.cabecalho-painel h2 {
+    margin: 0;
+    color: #333333;
+}
+
+.botao-secundario {
+    background-color: #dc3545; /* Cor vermelha para indicar saída */
+    width: auto;
+    padding: 8px 15px;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+.botao-secundario:hover {
+    background-color: #c82333;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 14px;
+    font-family: inherit;
+    background-color: white;
+}
