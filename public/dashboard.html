@@ -13,6 +13,10 @@
             <h2>Inserção de Valores</h2>
             <button id="botao-sair" class="botao-secundario">Sair</button>
         </header>
+        <div class="painel-total">
+            <span>Saldo Total</span>
+            <h2 id="valor-total">R$ 0.00</h2>
+        </div>
 
         <form id="formulario-transacao">
             <div class="grupo-campo">
@@ -41,6 +45,15 @@
 
             <button type="submit" id="botao-adicionar">Adicionar Transação</button>
         </form>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+        
+        <div class="historico-transacoes">
+            <h3>Histórico de financias</h3>
+            <div id="lista-transacoes">
+                <p style="color: #888; text-align: center;">Carregando transações...</p>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="dashboard.js"></script>

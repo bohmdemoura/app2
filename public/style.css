@@ -127,3 +127,91 @@ select {
     font-family: inherit;
     background-color: white;
 }
+
+/* Estilo para cada item financeiro na lista */
+.item-transacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 4px solid #007bff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.item-transacao .detalhes {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-transacao .descricao {
+    font-weight: bold;
+    color: #333;
+}
+
+.item-transacao .metodo {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.item-transacao .valor {
+    font-weight: bold;
+    color: #28a745; /* Cor verde para destaque numérico */
+    font-size: 16px;
+}
+
+/* --- ESTILOS DO BOTÃO DE EXCLUIR --- */
+
+.item-transacao .acoes {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaçamento entre o valor (R$) e o botão X */
+}
+
+.botao-excluir {
+    background-color: #dc3545; /* Vermelho padrão para ações destrutivas */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-top: 0; /* Remove a margem superior padrão dos botões globais */
+    transition: background-color 0.2s;
+}
+
+.botao-excluir:hover {
+    background-color: #a71d2a; /* Vermelho mais escuro ao passar o mouse */
+}
+
+/* --- ESTILOS DO PAINEL NUMÉRICO --- */
+.painel-total {
+    background-color: #28a745; /* Cor verde para remeter a dinheiro/saldo */
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.painel-total span {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+.painel-total h2 {
+    margin: 10px 0 0 0;
+    font-size: 36px; /* Tamanho grande para destaque */
+    color: white; 
+}
