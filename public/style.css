@@ -130,6 +130,7 @@ h2#titulo-form {
   font-size: 15px;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
+  appearance: none;
   -webkit-appearance: none;
 }
 
