@@ -1,69 +1,214 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanças — Painel</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finanças — Painel</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="pagina-dashboard">
 
-    <div class="cartao-painel">
+  <div id="toast-container"></div>
 
-        <header class="cabecalho-painel">
-            <div class="titulo-app">
-                <span class="dot"></span>
-                <h2>Finanças</h2>
-            </div>
-            <button id="botao-sair" class="botao-sair">Sair</button>
-        </header>
-
-        <div class="painel-total">
-            <div class="label-saldo">Saldo total</div>
-            <h2 id="valor-total">R$ 0,00</h2>
+  <!-- Modal de Edição -->
+  <div id="modal-overlay" class="modal-overlay" style="display:none">
+    <div class="modal-caixa">
+      <div class="modal-cabecalho">
+        <p class="titulo-secao" style="margin:0">Editar transação</p>
+        <button id="modal-fechar" class="botao-modal-fechar">✕</button>
+      </div>
+      <form id="formulario-edicao">
+        <div class="grupo-campo">
+          <label>Tipo</label>
+          <div class="toggle-tipo">
+            <button type="button" class="btn-tipo ativo" data-tipo="despesa" id="edit-btn-despesa">Despesa</button>
+            <button type="button" class="btn-tipo" data-tipo="renda"   id="edit-btn-renda">Renda</button>
+          </div>
+          <input type="hidden" id="edit-tipo" value="despesa">
         </div>
-
-        <div class="secao-formulario">
-            <p class="titulo-secao">Nova transação</p>
-
-            <form id="formulario-transacao">
-                <div class="grupo-campo">
-                    <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao" required placeholder="Ex: Supermercado">
-                </div>
-
-                <div class="grupo-campo">
-                    <label for="valor">Valor (R$)</label>
-                    <input type="number" id="valor" step="0.01" required placeholder="0,00">
-                </div>
-
-                <div class="grupo-campo">
-                    <label for="tipo-pagamento">Pagamento</label>
-                    <select id="tipo-pagamento" required>
-                        <option value="">Selecione...</option>
-                        <option value="debito">Débito</option>
-                        <option value="credito">Crédito</option>
-                    </select>
-                </div>
-
-                <div class="grupo-campo" id="area-parcelas" style="display: none;">
-                    <label for="parcelas">Parcelas</label>
-                    <input type="number" id="parcelas" min="1" value="1">
-                </div>
-
-                <button type="submit" id="botao-adicionar">+ Adicionar transação</button>
-            </form>
+        <div class="grupo-campo">
+          <label for="edit-descricao">Descrição</label>
+          <input type="text" id="edit-descricao" required placeholder="Ex: Supermercado">
         </div>
-
-        <div class="historico-transacoes">
-            <p class="titulo-secao">Histórico</p>
-            <div id="lista-transacoes">
-                <p class="estado-vazio">Carregando transações...</p>
-            </div>
+        <div class="grupo-campo">
+          <label for="edit-valor">Valor (R$)</label>
+          <input type="number" id="edit-valor" step="0.01" min="0.01" required placeholder="0,00">
         </div>
+        <div class="grupo-campo">
+          <label for="edit-data">Data</label>
+          <input type="date" id="edit-data" required>
+        </div>
+        <div class="grupo-campo">
+          <label for="edit-categoria">Categoria</label>
+          <select id="edit-categoria">
+            <option value="">Sem categoria</option>
+            <option value="alimentacao">🍔 Alimentação</option>
+            <option value="transporte">🚗 Transporte</option>
+            <option value="moradia">🏠 Moradia</option>
+            <option value="saude">❤️ Saúde</option>
+            <option value="lazer">🎉 Lazer</option>
+            <option value="educacao">📚 Educação</option>
+            <option value="vestuario">👕 Vestuário</option>
+            <option value="salario">💼 Salário</option>
+            <option value="investimento">📈 Investimento</option>
+            <option value="outro">📦 Outro</option>
+          </select>
+        </div>
+        <div id="edit-area-pagamento">
+          <div class="grupo-campo">
+            <label for="edit-pagamento">Pagamento</label>
+            <select id="edit-pagamento">
+              <option value="">Selecione...</option>
+              <option value="debito">Débito</option>
+              <option value="credito">Crédito</option>
+            </select>
+          </div>
+          <div class="grupo-campo" id="edit-area-parcelas" style="display:none">
+            <label for="edit-parcelas">Parcelas</label>
+            <input type="number" id="edit-parcelas" min="1" value="1">
+          </div>
+        </div>
+        <div class="grupo-campo">
+          <label for="edit-observacao">Observação (opcional)</label>
+          <textarea id="edit-observacao" placeholder="Anotações..."></textarea>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button type="button" id="modal-cancelar" class="botao-secundario">Cancelar</button>
+          <button type="submit" id="modal-salvar">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
+  <div class="cartao-painel">
+
+    <header class="cabecalho-painel">
+      <div class="titulo-app">
+        <span class="dot"></span>
+        <h2>Finanças</h2>
+      </div>
+      <button id="botao-sair" class="botao-sair">Sair</button>
+    </header>
+
+    <!-- Resumo -->
+    <div class="painel-resumo">
+      <div class="resumo-item resumo-renda">
+        <span class="resumo-label">Rendas</span>
+        <span class="resumo-valor" id="valor-rendas">R$ 0,00</span>
+      </div>
+      <div class="resumo-item resumo-despesa">
+        <span class="resumo-label">Despesas</span>
+        <span class="resumo-valor" id="valor-despesas">R$ 0,00</span>
+      </div>
+      <div class="resumo-item resumo-saldo">
+        <span class="resumo-label">Saldo</span>
+        <span class="resumo-valor" id="valor-total">R$ 0,00</span>
+      </div>
     </div>
 
-    <script type="module" src="dashboard.js"></script>
+    <!-- Gráfico -->
+    <div class="secao-grafico" id="secao-grafico" style="display:none">
+      <p class="titulo-secao">Despesas por categoria</p>
+      <div class="grafico-container">
+        <canvas id="grafico-categorias" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- Formulário nova transação -->
+    <div class="secao-formulario">
+      <p class="titulo-secao">Nova transação</p>
+      <form id="formulario-transacao">
+
+        <div class="grupo-campo">
+          <label>Tipo</label>
+          <div class="toggle-tipo">
+            <button type="button" class="btn-tipo ativo" data-tipo="despesa">Despesa</button>
+            <button type="button" class="btn-tipo" data-tipo="renda">Renda</button>
+          </div>
+          <input type="hidden" id="tipo-transacao" value="despesa">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="descricao">Descrição</label>
+          <input type="text" id="descricao" required placeholder="Ex: Supermercado">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="valor">Valor (R$)</label>
+          <input type="number" id="valor" step="0.01" min="0.01" required placeholder="0,00">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="data-transacao">Data</label>
+          <input type="date" id="data-transacao" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="categoria">Categoria</label>
+          <select id="categoria">
+            <option value="">Sem categoria</option>
+            <option value="alimentacao">🍔 Alimentação</option>
+            <option value="transporte">🚗 Transporte</option>
+            <option value="moradia">🏠 Moradia</option>
+            <option value="saude">❤️ Saúde</option>
+            <option value="lazer">🎉 Lazer</option>
+            <option value="educacao">📚 Educação</option>
+            <option value="vestuario">👕 Vestuário</option>
+            <option value="salario">💼 Salário</option>
+            <option value="investimento">📈 Investimento</option>
+            <option value="outro">📦 Outro</option>
+          </select>
+        </div>
+
+        <div id="area-pagamento">
+          <div class="grupo-campo">
+            <label for="tipo-pagamento">Pagamento</label>
+            <select id="tipo-pagamento">
+              <option value="">Selecione...</option>
+              <option value="debito">Débito</option>
+              <option value="credito">Crédito</option>
+            </select>
+          </div>
+          <div class="grupo-campo" id="area-parcelas" style="display:none">
+            <label for="parcelas">Parcelas</label>
+            <input type="number" id="parcelas" min="1" value="1">
+          </div>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="observacao">Observação (opcional)</label>
+          <textarea id="observacao" placeholder="Anotações sobre esta transação..."></textarea>
+        </div>
+
+        <button type="submit" id="botao-adicionar">+ Adicionar despesa</button>
+      </form>
+    </div>
+
+    <!-- Histórico -->
+    <div class="historico-transacoes">
+      <p class="titulo-secao">Histórico</p>
+
+      <div class="barra-filtros">
+        <button class="botao-filtro ativo" data-filtro="todos">Todos</button>
+        <button class="botao-filtro" data-filtro="este-mes">Este mês</button>
+        <button class="botao-filtro" data-filtro="proximo-mes">Próximo mês</button>
+        <button class="botao-filtro" data-filtro="mais-recentes">Mais recentes</button>
+        <button class="botao-filtro" data-filtro="mais-antigos">Mais antigos</button>
+      </div>
+
+      <!-- Filtro por categoria -->
+      <div class="barra-categorias" id="barra-categorias"></div>
+
+      <p class="contador-filtro" id="contador-filtro"></p>
+
+      <div id="lista-transacoes">
+        <p class="estado-vazio">Carregando transações...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
