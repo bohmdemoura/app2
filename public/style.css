@@ -940,3 +940,10 @@ body.pagina-dashboard {
   color: var(--accent);
   transform: translateY(-1px);
 }
+
+.versao-app { 
+  text-align: center;
+  font-size: 11px; 
+  color: var(--text-3); 
+  font-family: var(--font-mono); 
+  margin-top: 24px; }
