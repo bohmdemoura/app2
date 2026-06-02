@@ -205,10 +205,40 @@
         <p class="estado-vazio">Carregando transações...</p>
       </div>
     </div>
-        <p class="versao-app" data-version="1.0.0">v1.0.0</p>
+
+  </div>
+
+  <!-- Chat IA Flutuante -->
+  <button id="botao-chat-ia" class="botao-chat-ia" aria-label="Abrir assistente financeiro">
+    <span class="chat-ia-icon">✦</span>
+  </button>
+
+  <div id="painel-chat-ia" class="painel-chat-ia" style="display:none">
+    <div class="chat-cabecalho">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:16px">✦</span>
+        <div>
+          <p class="chat-titulo">Assistente Financeiro</p>
+          <p class="chat-subtitulo">Powered by Gemini</p>
+        </div>
+      </div>
+      <button id="chat-fechar" class="botao-modal-fechar">✕</button>
+    </div>
+    <div id="chat-mensagens" class="chat-mensagens">
+      <div class="chat-msg chat-msg-ia">
+        Olá! Sou seu assistente financeiro. Pergunte-me sobre seus gastos, rendas ou saldo — por exemplo: <em>"Quanto gastei com alimentação?"</em> ou <em>"Qual meu saldo este mês?"</em>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Pergunte sobre suas finanças..." autocomplete="off">
+      <button id="chat-enviar" class="botao-chat-enviar">➤</button>
+    </div>
+
+    <p class="versao-app" data-version="1.0.0">v1.0.0</p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script type="module" src="dashboard.js"></script>
+  <script type="module" src="gemini-chat.js"></script>
 </body>
 </html>
