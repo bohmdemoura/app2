@@ -73,16 +73,18 @@ body {
 }
 
 .logo-icon {
-  width: 48px;
-  height: 48px;
-  background: var(--accent-dim);
-  border: 1px solid rgba(74,222,128,0.2);
+  width: 72px;
+  height: 72px;
+  display: block;
+  margin: 0 auto 16px;
   border-radius: var(--radius-md);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  font-size: 22px;
+}
+
+.logo-header {
+  width: 28px;
+  height: 28px;
+  display: block;
+  border-radius: 6px;
 }
 
 h2#titulo-form {
@@ -238,13 +240,6 @@ body.pagina-dashboard {
   gap: 10px;
 }
 
-.cabecalho-painel .titulo-app .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
-}
 
 .cabecalho-painel h2 {
   font-size: 17px;
