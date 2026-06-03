@@ -130,6 +130,7 @@ h2#titulo-form {
   font-size: 15px;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
+  appearance: none;
   -webkit-appearance: none;
 }
 
@@ -1128,4 +1129,12 @@ body.pagina-dashboard {
     bottom: 20px;
     right: 20px;
   }
+}
+
+.versao-app {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  margin-top: 24px;
 }
