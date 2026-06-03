@@ -67,3 +67,16 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Chave da API — nunca subir para o GitHub
+public/gemini-chat.js
+
+# Dependências
+node_modules/
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
