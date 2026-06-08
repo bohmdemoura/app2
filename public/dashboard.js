@@ -11,6 +11,7 @@ let filtroAtivo     = 'todos';
 let categoriaAtiva  = '';
 let graficoInstance = null;
 let editandoId      = null;
+let termoBusca      = '';
 
 // ── Formatação de moeda (pt-BR) ───────────────────────
 const moeda = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -144,7 +145,45 @@ document.getElementById('formulario-transacao').addEventListener('submit', async
   }
 });
 
-// ── Filtros de período ───────────────────────────────
+// ── Modal de confirmação de exclusão ─────────────────
+const modalConfirmar = document.getElementById('modal-confirmar-exclusao');
+let excluirIdPendente = null;
+
+function abrirConfirmarExclusao(id, descricao) {
+  excluirIdPendente = id;
+  document.getElementById('modal-confirmar-desc').textContent =
+    `"${descricao}" será removida permanentemente.`;
+  modalConfirmar.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharConfirmarExclusao() {
+  modalConfirmar.style.display = 'none';
+  document.body.style.overflow = '';
+  excluirIdPendente = null;
+}
+
+document.getElementById('confirmar-cancelar').addEventListener('click', fecharConfirmarExclusao);
+modalConfirmar.addEventListener('click', (e) => { if (e.target === modalConfirmar) fecharConfirmarExclusao(); });
+
+document.getElementById('confirmar-excluir').addEventListener('click', async () => {
+  if (!excluirIdPendente) return;
+  const id = excluirIdPendente;
+  fecharConfirmarExclusao();
+  try {
+    await deleteDoc(doc(db, 'transacoes', id));
+    showToast('Transação removida.', 'info');
+  } catch (erro) {
+    console.error('Erro ao excluir:', erro);
+    showToast('Não foi possível remover a transação.', 'erro');
+  }
+});
+
+// ── Busca por descrição ───────────────────────────────
+document.getElementById('campo-busca').addEventListener('input', (e) => {
+  termoBusca = e.target.value.trim().toLowerCase();
+  renderizarLista();
+});
 document.querySelectorAll('.botao-filtro').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.botao-filtro').forEach(b => b.classList.remove('ativo'));
@@ -329,6 +368,13 @@ function renderizarLista() {
     lista = lista.filter(t => t.categoria === categoriaAtiva);
   }
 
+  // Filtro busca
+  if (termoBusca) {
+    lista = lista.filter(t =>
+      (t.descricao || '').toLowerCase().includes(termoBusca)
+    );
+  }
+
   // Ordenação
   if (filtroAtivo === 'mais-antigos') {
     lista.sort((a, b) => toDate(a.data) - toDate(b.data));
@@ -422,16 +468,8 @@ function renderizarLista() {
     });
 
     // Excluir
-    caixaItem.querySelector('.botao-excluir').addEventListener('click', async () => {
-      if (confirm('Remover esta transação permanentemente?')) {
-        try {
-          await deleteDoc(doc(db, 'transacoes', dados.id));
-          showToast('Transação removida.', 'info');
-        } catch (erro) {
-          console.error('Erro ao excluir:', erro);
-          showToast('Não foi possível remover a transação.', 'erro');
-        }
-      }
+    caixaItem.querySelector('.botao-excluir').addEventListener('click', () => {
+      abrirConfirmarExclusao(dados.id, dados.descricao);
     });
 
     areaLista.appendChild(caixaItem);
@@ -577,4 +615,4 @@ formEdicao.addEventListener('submit', async (e) => {
     botao.disabled    = false;
     botao.textContent = 'Salvar alterações';
   }
-}); 
+});

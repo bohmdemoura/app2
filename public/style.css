@@ -1126,6 +1126,93 @@ body.pagina-dashboard {
   }
 }
 
+/* ── Modal de confirmação de exclusão ──────────────── */
+
+.modal-confirmar-caixa {
+  max-width: 340px;
+  text-align: center;
+  padding: 32px 28px;
+}
+
+.modal-confirmar-icone {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--danger-dim);
+  border: 1px solid rgba(248,113,113,0.25);
+  color: var(--danger);
+  font-size: 24px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  line-height: 1;
+}
+
+.modal-confirmar-titulo {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-1);
+  margin-bottom: 8px;
+}
+
+.modal-confirmar-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.botao-excluir-confirmar {
+  flex: 1;
+  background: var(--danger-dim);
+  color: var(--danger);
+  border: 1px solid rgba(248,113,113,0.3);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  width: auto;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.botao-excluir-confirmar:hover {
+  background: rgba(248,113,113,0.2);
+  border-color: rgba(248,113,113,0.5);
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Barra de busca ────────────────────────────────── */
+
+.barra-busca {
+  margin-bottom: 14px;
+}
+
+.barra-busca input {
+  width: 100%;
+  padding: 9px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.barra-busca input::placeholder {
+  color: var(--text-3);
+}
+
+.barra-busca input:focus {
+  border-color: rgba(74,222,128,0.4);
+  box-shadow: 0 0 0 3px rgba(74,222,128,0.07);
+}
+
 .versao-app {
   text-align: center;
   font-size: 11px;
